@@ -62,6 +62,7 @@ public class AVLTree{
         //caso izquierda-izquierda
         if(balance>1&& value<node.getValue()){
             System.out.println("Rotacion derecha");
+            return this.rotacionDerecha(node);
 
         }
 
@@ -69,11 +70,13 @@ public class AVLTree{
 
         if(balance<-1&& value> node.getDerecha().getValue()){
             System.out.println("Rotacion Derecha Derecha");
+            return this.rotacionIzquierda(node);
         }  
 
         //Caso izquierda -derecha
         if(balance > 1 && value > node.getIzquierda().getValue()){
-            System.out.println("Rotacion izquierda-derecha");
+            node.setIzquierda(this.rotacionIzquierda(node.getIzquierda()));
+            return this.rotacionDerecha(node);
     
         }
 
@@ -83,10 +86,32 @@ public class AVLTree{
 
         if(balance < -1 && value < node.getDerecha().getValue()){
             System.out.println("Rotacion derecha-izquierda");
+            node.setDerecha(this.rotacionDerecha(node.getDerecha()));
+            return this.rotacionIzquierda(node);
         }   
 
 
         return node;
+    }
+
+    public Node rotacionDerecha(Node y) {
+        Node x = y.getIzquierda();
+        Node T2 = x.getDerecha();
+        x.setDerecha(y);
+        y.setIzquierda(T2);
+        y.setHeight(1 + Math.max(this.height(y.getIzquierda()), this.height(y.getDerecha())));
+        x.setHeight(1 + Math.max(this.height(x.getIzquierda()), this.height(x.getDerecha())));
+        return x;
+    }
+
+    public Node rotacionIzquierda(Node x) {
+        Node y = x.getDerecha();
+        Node T2 = y.getIzquierda();
+        y.setIzquierda(x);
+        x.setDerecha(T2);
+        x.setHeight(1 + Math.max(this.height(x.getIzquierda()), this.height(x.getDerecha())));
+        y.setHeight(1 + Math.max(this.height(y.getIzquierda()), this.height(y.getDerecha())));
+        return y;
     }
 
 
